@@ -192,16 +192,21 @@ body{padding-bottom:84px}
 @media (min-width:768px){.steps-photo img{aspect-ratio:21/9;object-position:center 35%}}
 .timeline{list-style:none;margin:0;padding:0;position:relative;display:grid;gap:44px}
 .timeline::before{content:"";position:absolute;left:23px;top:8px;bottom:8px;width:1px;background:var(--line)}
-.timeline::after{content:"";position:absolute;left:23px;top:8px;width:1px;height:calc(100% - 16px);background:linear-gradient(var(--gold),var(--gold-ink));transform-origin:top;transform:scaleY(0);transition:transform 1.8s var(--ease-io)}
+.timeline::after{content:"";position:absolute;left:23px;top:8px;width:1px;height:calc(100% - 16px);background:linear-gradient(var(--gold),var(--gold-ink));transform-origin:top;transform:scaleY(0);transition:transform 1.6s var(--ease-io) .2s}
 .timeline.in::after{transform:scaleY(1)}
 .step{position:relative;padding-left:76px}
 .step-num{
-  position:absolute;left:0;top:0;width:48px;height:48px;border-radius:50%;
+  position:absolute;left:0;top:0;width:48px;height:48px;border-radius:50%;z-index:2;
   display:grid;place-items:center;background:var(--navy);color:var(--gold);
-  font-family:var(--serif);font-weight:700;font-size:1.35rem;border:4px solid var(--cream-2);
-  transition:background-color .6s var(--ease) .3s, color .6s var(--ease) .3s;
+  font-family:var(--serif);font-weight:700;font-size:1.35rem;line-height:1;border:4px solid var(--cream-2);
+  box-shadow:0 0 0 1px rgba(184,151,90,.55);
+  opacity:0;transform:scale(.6);
+  transition:opacity .6s var(--ease), transform .7s cubic-bezier(.34,1.4,.5,1);
 }
-.timeline.in .step-num{background:var(--navy);color:var(--gold)}
+.timeline.in .step-num{opacity:1;transform:none}
+.timeline.in .step:nth-child(1) .step-num{transition-delay:.15s}
+.timeline.in .step:nth-child(2) .step-num{transition-delay:.75s}
+.timeline.in .step:nth-child(3) .step-num{transition-delay:1.35s}
 .step h3{font-size:1.6rem;margin:.1rem 0 .4rem}
 .step p{color:var(--muted);margin:0;max-width:44ch}
 .steps-cta{margin-top:3rem;text-align:center}
@@ -216,8 +221,13 @@ body{padding-bottom:84px}
 .mision .wrap{position:relative;text-align:center;max-width:900px}
 .mision h2{font-size:clamp(1.9rem,4.4vw,3rem);color:var(--gold);font-style:italic;font-weight:500;margin-bottom:1.6rem}
 .quote-mark{font-family:var(--serif);font-size:7rem;line-height:.5;color:var(--gold);opacity:.7;height:50px;display:block}
-.mision blockquote{margin:0;font-family:var(--serif);font-size:clamp(1.25rem,3.4vw,2.2rem);line-height:1.45;color:var(--cream);text-wrap:pretty}
-.mision .divider{width:64px;height:1px;background:var(--gold);margin:2.2rem auto 0}
+.mision blockquote{margin:0;font-family:var(--serif);font-size:clamp(1.25rem,3.4vw,2.2rem);line-height:1.45;color:var(--cream);text-wrap:balance;max-width:34em;margin-inline:auto;text-align:center}
+.mision .orn{display:flex;align-items:center;justify-content:center;gap:14px;margin:0 auto;max-width:260px}
+.mision .orn::before,.mision .orn::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,transparent,var(--gold))}
+.mision .orn::after{background:linear-gradient(270deg,transparent,var(--gold))}
+.mision .orn i{width:7px;height:7px;background:var(--gold);transform:rotate(45deg)}
+.mision .orn-top{margin-bottom:2rem}.mision .orn-bot{margin-top:2.4rem}
+.mision .sign{margin:1.2rem 0 0;font-size:.78rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold)}
 
 /* ---------- Firma / equipo ---------- */
 .firma-grid{display:grid;gap:clamp(3rem,7vw,5rem);align-items:center}
@@ -560,11 +570,12 @@ footer .brand-logo{height:56px}
 <section class="section mision on-dark" id="mision" aria-labelledby="mision-title">
   <div class="wrap">
     <div class="reveal">
-      <p class="eyebrow" style="justify-content:center">Misión</p>
+      <p class="eyebrow" style="justify-content:center;margin-bottom:1.4rem">Misión</p>
       <h2 id="mision-title" class="sr-only">Nuestra misión</h2>
-      <span class="quote-mark" aria-hidden="true">&ldquo;</span>
+      <div class="orn orn-top" aria-hidden="true"><i></i></div>
       <blockquote>Nuestra misión es brindar asesoría y defensa legal especializada en materia laboral, actuando con empatía hacia los trabajadores y comprendiendo sus necesidades reales. Buscamos garantizar el respeto y cumplimiento de sus derechos, ofreciendo un servicio cercano, ético y humano. Nos mantenemos a la vanguardia en conocimiento y estrategias jurídicas, para proteger y fortalecer la dignidad laboral de quienes confían en nosotros.</blockquote>
-      <div class="divider" aria-hidden="true"></div>
+      <div class="orn orn-bot" aria-hidden="true"><i></i></div>
+      <p class="sign">Torres &amp; Otero S.C.</p>
     </div>
   </div>
 </section>
