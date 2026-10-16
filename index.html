@@ -203,22 +203,27 @@ body{padding-bottom:84px}
 .steps-photo::after{content:"";position:absolute;inset:14px -10px -14px 10px;border:1px solid var(--gold);border-radius:4px;z-index:-1}
 @media (min-width:768px){.steps-photo img{aspect-ratio:21/9;object-position:center 35%}}
 .timeline{list-style:none;margin:0;padding:0;position:relative;display:grid;gap:44px}
-.timeline::before{content:"";position:absolute;left:23px;top:8px;bottom:8px;width:1px;background:var(--line)}
-.timeline::after{content:"";position:absolute;left:23px;top:8px;width:1px;height:calc(100% - 16px);background:linear-gradient(var(--gold),var(--gold-ink));transform-origin:top;transform:scaleY(0);transition:transform 1.6s var(--ease-io) .2s}
-.timeline.in::after{transform:scaleY(1)}
 .step{position:relative;padding-left:76px}
 .step-num{
   position:absolute;left:0;top:0;width:48px;height:48px;border-radius:50%;z-index:2;
   display:grid;place-items:center;background:var(--navy);color:var(--gold);
   font-family:var(--serif);font-weight:700;font-size:1.35rem;line-height:1;border:4px solid var(--cream-2);
   box-shadow:0 0 0 1px rgba(184,151,90,.55);
-  opacity:0;transform:scale(.6);
-  transition:opacity .6s var(--ease), transform .7s cubic-bezier(.34,1.4,.5,1);
+  transform:scale(0);
 }
-.timeline.in .step-num{opacity:1;transform:none}
-.timeline.in .step:nth-child(1) .step-num{transition-delay:.15s}
-.timeline.in .step:nth-child(2) .step-num{transition-delay:.75s}
-.timeline.in .step:nth-child(3) .step-num{transition-delay:1.35s}
+/* conector entre círculos: pista tenue + trazo dorado que se dibuja */
+.step:not(:last-child)::before,.step:not(:last-child)::after{content:"";position:absolute;left:23px;top:48px;width:1px;height:calc(100% - 4px);z-index:0}
+.step:not(:last-child)::before{background:var(--line)}
+.step:not(:last-child)::after{background:linear-gradient(var(--gold),var(--gold-ink));transform:scaleY(0);transform-origin:top}
+.step-body{opacity:0;transform:translateY(22px);filter:blur(8px)}
+.step:nth-child(1){--t:.1s}.step:nth-child(2){--t:1.4s}.step:nth-child(3){--t:2.7s}
+.timeline.in .step-num{animation:pop .8s cubic-bezier(.34,1.5,.5,1) var(--t) forwards, ring 1.2s ease-out var(--t) 1}
+.timeline.in .step-body{animation:stepIn .9s var(--ease) calc(var(--t) + .25s) forwards}
+.timeline.in .step:not(:last-child)::after{animation:draw .75s var(--ease-io) calc(var(--t) + .55s) forwards}
+@keyframes pop{to{transform:scale(1)}}
+@keyframes ring{from{box-shadow:0 0 0 1px rgba(184,151,90,.55),0 0 0 0 rgba(184,151,90,.5)}to{box-shadow:0 0 0 1px rgba(184,151,90,.55),0 0 0 16px rgba(184,151,90,0)}}
+@keyframes stepIn{to{opacity:1;transform:none;filter:blur(0)}}
+@keyframes draw{to{transform:scaleY(1)}}
 .step h3{font-size:1.6rem;margin:.1rem 0 .4rem}
 .step p{color:var(--muted);margin:0;max-width:44ch}
 .steps-cta{margin-top:3rem;text-align:center}
@@ -327,11 +332,11 @@ footer .brand-logo{height:56px}
 }
 @media (min-width:768px){
   .timeline{grid-template-columns:repeat(3,1fr);gap:32px}
-  .timeline::before,.timeline::after{left:0;right:0;top:23px;bottom:auto;width:auto;height:1px}
-  .timeline::after{width:100%;height:1px;transform:scaleX(0);transform-origin:left}
-  .timeline.in::after{transform:scaleX(1)}
   .step{padding-left:0;padding-top:76px}
   .step-num{top:0;left:0}
+  .step:not(:last-child)::before,.step:not(:last-child)::after{left:48px;top:23px;width:calc(100% + 32px - 48px);height:1px}
+  .step:not(:last-child)::after{transform:scaleX(0);transform-origin:left}
+  @keyframes draw{to{transform:scaleX(1)}}
   .step p{max-width:none}
   .firma-grid{grid-template-columns:5fr 6fr}
   .cta-grid{grid-template-columns:1fr 1fr}
@@ -367,8 +372,7 @@ footer .brand-logo{height:56px}
   .hero .rise,.brand,.nav-links,.scroll-cue{opacity:1!important;transform:none;filter:none}
   .js .hero-media img{opacity:1;transform:none;filter:none}
   .js .hero-overlay,.js .hero-glow{opacity:1}.js .hero-lines{opacity:.5}
-  .timeline::after{transform:none}
-  .timeline.in::after{transform:none}
+  .step-num{transform:none}.step-body{opacity:1;transform:none;filter:none}.step:not(:last-child)::after{transform:none}
   .wa-float::before{display:none}
   .card{transform:none!important}
 }
@@ -559,20 +563,20 @@ footer .brand-logo{height:56px}
       <img src="img/asesoria.jpg" alt="El Lic. Torres explica un documento a una trabajadora durante una asesoría" loading="lazy" width="1536" height="1024">
     </figure>
     <ol class="timeline" id="timeline">
-      <li class="step reveal">
+      <li class="step">
         <span class="step-num" aria-hidden="true">1</span>
-        <h3>Escríbenos por WhatsApp</h3>
-        <p>Cuéntanos brevemente qué pasó con tu trabajo.</p>
+        <div class="step-body"><h3>Escríbenos por WhatsApp</h3>
+        <p>Cuéntanos brevemente qué pasó con tu trabajo.</p></div>
       </li>
-      <li class="step reveal" style="--d:150ms">
+      <li class="step">
         <span class="step-num" aria-hidden="true">2</span>
-        <h3>Analizamos tu caso sin costo</h3>
-        <p>Revisamos tu situación y te explicamos tus alternativas de defensa.</p>
+        <div class="step-body"><h3>Analizamos tu caso sin costo</h3>
+        <p>Revisamos tu situación y te explicamos tus alternativas de defensa.</p></div>
       </li>
-      <li class="step reveal" style="--d:300ms">
+      <li class="step">
         <span class="step-num" aria-hidden="true">3</span>
-        <h3>Presentamos tu defensa</h3>
-        <p>Preparamos y llevamos tu defensa legal con estrategia y seguimiento.</p>
+        <div class="step-body"><h3>Presentamos tu defensa</h3>
+        <p>Preparamos y llevamos tu defensa legal con estrategia y seguimiento.</p></div>
       </li>
     </ol>
     <div class="steps-cta reveal">
